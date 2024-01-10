@@ -6,6 +6,37 @@ const Button = ({ handleClick, text }) => (
   </button>
 )
 
+const StatisticLine = ({text, value}) => {
+  return (
+    <tr>
+      <td>{text}</td>
+      <td>{value}</td>
+    </tr>
+  )
+}
+
+const Statistics = ({good, neutral, bad, total}) => {
+  if (total === 0) {
+    return (
+      <div>
+        No feedback given
+      </div>
+    )
+  } 
+  return (
+    <table>
+      <tbody>
+        <StatisticLine text="good" value={good} />
+        <StatisticLine text="neutral" value={neutral} />
+        <StatisticLine text="bad" value={bad} />
+        <StatisticLine text="all" value={total} />
+        <StatisticLine text="average" value={(good - bad) / total} />
+        <StatisticLine text="positive" value={ ((good / total) * 100) + " %"} />
+      </tbody>
+    </table>
+  )
+}
+
 const App = () => {
   // tallenna napit omaan tilaansa
   const [good, setGood] = useState(0)
@@ -24,27 +55,6 @@ const App = () => {
     setBad(bad + 1)
   }
 
-  const sum = () => { return (good + neutral + bad) }
-
-  const avg = () => {
-    const total = good + neutral + bad
-    if (total === 0) {
-      return 0
-    }
-    else {
-      return ((good - bad) / total)
-    }
-  }
-
-  const positive = () => {
-    if ((good + neutral + bad) === 0) {
-      return 0
-    }
-    else {
-      return (good / (good + neutral + bad)) * 100
-    }
-  }
-
   return (
     <div>
       <h1>give feedback</h1>
@@ -52,12 +62,7 @@ const App = () => {
       <Button handleClick={handleNeutral} text="neutral" />
       <Button handleClick={handleBad} text="bad" />
       <h1>statistics</h1>
-      <p>good {good}</p>
-      <p>neutral {neutral}</p>
-      <p>bad {bad}</p>
-      <p>all {sum()}</p>
-      <p>average {avg()}</p>
-      <p>positive {positive()}%</p>
+      <Statistics good={good} neutral={neutral} bad={bad} total={good + neutral + bad} />
     </div>
   )
 }
