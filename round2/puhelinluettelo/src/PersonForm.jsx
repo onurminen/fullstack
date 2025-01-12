@@ -1,6 +1,3 @@
-/* eslint-disable react/prop-types */
-
-
 
 const PersonForm = ({nameChange, numChange, addContact}) => {
 return (
